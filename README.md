@@ -5,6 +5,8 @@ This is a template for a browser extension. It is a simple extension that demons
 - Intercepting a request from the content script in the background script
 - Open a popup in the side bar when the extension icon is clicked.
 
+![browser-extension](https://github.com/conorw/browser-extension-template/assets/3536589/567febec-a793-4c09-afb9-544a0597ac4d)
+
 ## Getting Started
 1. Clone the repository
 2. Open the browser and navigate to `chrome://extensions/`
