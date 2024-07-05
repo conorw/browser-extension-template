@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Browser Extension Template",
   "version": "0.1.0",
-  "description": "This is a template extension project for a browser extension. It has a popup, options, and a background script. It also has a content script and a web accessible resource. This extension demonstrates the use of the storage, identity, and activeTab permissions. It also demonstrates the use of the host permission for cross-origin communication, and the use of the externally_connectable key for cross-extension communication. The extension also uses the webRequest API to block certain requests",
+  "description": "This is a template extension project for a browser extension.",
   "icons": {
     "16": "icon.png",
     "32": "icon.png",
