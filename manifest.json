@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Browser Extension Template",
+  "version": "0.1.0",
+  "description": "This is a template extension project for a browser extension. It has a popup, options, and a background script. It also has a content script and a web accessible resource. This extension demonstrates the use of the storage, identity, and activeTab permissions. It also demonstrates the use of the host permission for cross-origin communication, and the use of the externally_connectable key for cross-extension communication. The extension also uses the webRequest API to block certain requests",
+  "icons": {
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "side_panel": {
+    "default_path": "popup.html"
+  },
+  "permissions": ["activeTab", "sidePanel"],
+  "action": {
+    "default_title": "Browser Extension Template",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "web_accessible_resources": [
+    {
+      "matches": ["<all_urls>"],
+      "resources": ["icon.png"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "all_frames": false,
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["popup.css"]
+    }
+  ]
+}
