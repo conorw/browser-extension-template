@@ -1,28 +1,31 @@
-(function(){
+(async () => {
     console.log('popup.js loaded');
-    function getTabSelectedText(){
+
+    const getTabSelectedText = async () => {
         console.log('Popup: getTabSelectedText clicked');
-        // send a message to the content script to get the selected text
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { type: 'GET_PAGE_CONTENT' }, function (response) {
-                console.log('Popup: Received response:', response);
-                document.getElementById('response').innerText = response?.content;
-            });
+        // Send a message to the content script to get the selected text
+        const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (tabs.length === 0) return; // Exit if no active tab found
+        chrome.tabs.sendMessage(tabs[0].id, { type: 'GET_PAGE_CONTENT' }, (response) => {
+            console.log('Popup: Received response:', response);
+            const responseElement = document.getElementById('response');
+            if (responseElement) responseElement.innerText = response?.content || 'No content';
         });
-    }
-    // await document loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        // add event listener for the getTabSelectedText button
-        document.getElementById('clickme').addEventListener('click', getTabSelectedText);
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Add event listener for the getTabSelectedText button
+        const clickMeButton = document.getElementById('clickme');
+        if (clickMeButton) clickMeButton.addEventListener('click', getTabSelectedText);
     });
-    chrome.runtime.onMessage.addListener(
-        function (request, sender, sendResponse) {
-            if (request.type === "SELECTED_TEXT") {
-                // the page html content
-                const content = request.content;
-                document.getElementById('response').innerText = content;
-            }
-            return true;
+
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.type === "SELECTED_TEXT") {
+            // The page html content
+            const content = request.content;
+            const responseElement = document.getElementById('response');
+            if (responseElement) responseElement.innerText = content;
         }
-    );
-})()
+        return true; // Indicate that sendResponse will be called asynchronously
+    });
+})();

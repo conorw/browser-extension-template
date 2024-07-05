@@ -1,21 +1,33 @@
 // Handles background tasks for the extension
 (() => {
     console.log('background.js loaded');
-    chrome.runtime.onInstalled.addListener(() => {
-        chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
-    });
-    // Listen for messages from both parts of the extension
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+
+    // Ensure the sidePanel API is available before attempting to use it
+    if (chrome.sidePanel) {
+        chrome.runtime.onInstalled.addListener(() => {
+            // Automatically open the side panel when the extension's action is clicked
+            chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
+        });
+    } else {
+        console.warn('This version of Chrome does not support sidePanel API.');
+    }
+
+    // Define a function to handle incoming messages
+    const handleMessage = (request, sender, sendResponse) => {
         console.log('Message received:', request);
-        // Handle different actions
         switch (request.type) {
             case 'SELECTED_TEXT':
-                // if we wanted to do something with the selected text e.g. save it to local storage, call an api etc
+                // Process the selected text, e.g., save it or call an API
                 console.log('Background: Selected text:', request.content);
                 break;
+            // Add more cases as needed
+            default:
+                console.warn('Unhandled message type:', request.type);
         }
-        // Return true to indicate that sendResponse will be called asynchronously
+        // Indicate that sendResponse will be called asynchronously
         return true;
-    });
+    };
 
+    // Listen for messages from content scripts or popup
+    chrome.runtime.onMessage.addListener(handleMessage);
 })();
